@@ -156,11 +156,13 @@ jobs:
   deploy-uffizzi-preview:
     name: Use Remote Workflow to Preview on Uffizzi
     needs: render-compose-file
-    uses: UffizziCloud/preview-action/.github/workflows/reusable.yaml@v2.6.0
+    uses: UffizziCloud/preview-action/.github/workflows/reusable.yaml@feature/56_pass_github_token_to_find_deployment_step
     with:
       compose-file-cache-key: ${{ needs.render-compose-file.outputs.compose-file-cache-key }}
       compose-file-cache-path: ${{ needs.render-compose-file.outputs.compose-file-cache-path }}
-      server: https://app.uffizzi.com
+      server: https://31e4-62-4-33-119.ngrok.io
+    secrets:
+      access-token: ${{ secrets.GITHUB_TOKEN }}
     permissions:
       contents: read
       pull-requests: write
@@ -178,3 +180,4 @@ jobs:
       contents: read
       pull-requests: write
       id-token: write
+
