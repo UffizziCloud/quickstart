@@ -1,0 +1,160 @@
+name: E2E
+
+on:
+  pull_request:
+    branches: [ main ]
+    types: [opened,reopened,synchronize,closed]
+
+permissions:
+  contents: read
+  pull-requests: write
+  id-token: write
+
+jobs:
+  build-image:
+    name: Build and Push `nodejs` Image
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
+    outputs:
+      tags: ${{ steps.meta.outputs.tags }}
+      uuid: ${{ env.UUID_IMAGE }}
+    steps:
+      - name: Checkout git repo
+        uses: actions/checkout@v3
+      - name: Generate UUID image name
+        id: uuid
+        run: echo "UUID_IMAGE=$(uuidgen)" >> $GITHUB_ENV
+      - name: Docker metadata
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          # An anonymous, emphemeral registry built on ttl.sh
+          images: registry.uffizzi.com/${{ env.UUID_IMAGE }}
+          tags: type=raw,value=48h
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Build and Push Image to Uffizzi Ephemeral Registry
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          context: ./
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  uffizzi-cluster:
+    name: Deploy Helm chart to Uffizzi Virtual Cluster
+    needs:
+      - build-image
+    if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Identify comment to be updated
+      - name: Find comment for Ephemeral Environment
+        uses: peter-evans/find-comment@v2
+        id: find-comment
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: "github-actions[bot]"
+          body-includes: pr-${{ github.event.pull_request.number }}-e2e-helm
+          direction: last
+
+      # Create/Update comment with action deployment status
+      - name: Create or Update Comment with Deployment Notification
+        id: notification
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          comment-id: ${{ steps.find-comment.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ## Uffizzi Ephemeral Environment - Virtual Cluster - E2E Helm Chart
+
+            :cloud: deploying ...
+
+            :gear: Updating now by workflow run [${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}).
+
+            Cluster name will be `pr-${{ github.event.pull_request.number }}-e2e-helm`
+
+            Download the Uffizzi CLI to interact with the upcoming virtual cluster
+            https://docs.uffizzi.com/install
+          edit-mode: replace
+
+      - name: Create and connect to vcluster
+        uses: UffizziCloud/cluster-action@main
+        with:
+          cluster-name: pr-${{ github.event.pull_request.number }}-e2e-helm
+          server: https://app.uffizzi.com
+
+      - name: Apply Kustomize to test the new image
+        id: prev
+        run: |
+          # Change the image name to those just built and pushed.
+          kustomize edit set image uffizzi/hello-world-k8s=${{ needs.build-image.outputs.tags }}
+
+          if [[ ${RUNNER_DEBUG} == 1 ]]; then
+            cat kustomization.yaml
+            echo "`pwd`"
+            echo "`ls`"
+          fi
+
+          # Apply kustomized manifests to virtual cluster.
+          kubectl apply --kustomize . --kubeconfig ./kubeconfig
+
+          # Allow uffizzi to sync the resources
+          sleep 5
+
+          # Get the hostnames assigned by uffizzi
+          export WEB_HOST=$(kubectl get ingress web --kubeconfig kubeconfig -o json | jq '.spec.rules[0].host' | tr -d '"')
+
+          if [[ ${RUNNER_DEBUG} == 1 ]]; then
+            kubectl get all --kubeconfig ./kubeconfig
+          fi
+
+          echo "web_url=${WEB_HOST}" >> $GITHUB_OUTPUT
+
+          echo "Access the \`web\` endpoint at [\`${WEB_HOST}\`](http://${WEB_HOST})" >> $GITHUB_STEP_SUMMARY
+
+      - name: Create or Update Comment with Deployment URL
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          comment-id: ${{ steps.notification.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ## Uffizzi Ephemeral Environment - Virtual Cluster - E2E Helm Chart
+
+            E2E tests in progress on the `pr-${{ github.event.pull_request.number }}-e2e-helm` cluster.
+          edit-mode: replace
+
+  uffizzi-cluster-delete:
+    if: ${{ github.event_name == 'pull_request' && github.event.action == 'closed' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete Virtual Cluster
+        uses: UffizziCloud/cluster-action@main
+        with:
+          action: delete
+          cluster-name: pr-${{ github.event.pull_request.number }}-e2e-helm
+          server: https://app.uffizzi.com
+
+      # Identify comment to be updated
+      - name: Find comment for Ephemeral Environment
+        uses: peter-evans/find-comment@v2
+        id: find-comment
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: "github-actions[bot]"
+          body-includes: pr-${{ github.event.pull_request.number }}-e2e-helm
+          direction: last
+
+      - name: Update Comment with Deletion
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          comment-id: ${{ steps.find-comment.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            Uffizzi Cluster `pr-${{ github.event.pull_request.number }}` was deleted.
+          edit-mode: replace
