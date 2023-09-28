@@ -1,33 +1,41 @@
-### Hello World K8s
+### Hello World for Uffizzi Virtual Clusters (~2 min)
 
-## ~ 2 minutes
+This repo demonstrates how you can create Kubernetes virtual cluster on Uffizzi Cloud, the apply manifests for an example application.
 
-This example demonstrates how you can deploy a simple k8s application on a Uffizzi Cluster.
+1. Clone this repository
+```
+git clone https://github.com/UffizziCloud/hello-world.git && \
+cd hello-world
+```
 
-
-1. Login to your Uffizzi account
+2. Authenticate with Uffizzi. This command will open a browser window for you to login or create an account.
 ```
 uffizzi login
 ```
 
-2. Create a Uffizzi cluster
+3. Create a Uffizzi cluster
 ```
-uffizzi cluster create
-```
-
-3. Update local kubeconfig with the Uffizzi cluster's kubeconfig
-```
-uffizzi cluster update-kubeconfig coolbean-cole
+uffizzi cluster create hello
+# [⠦] Creating cluster hello...
 ```
 
 4. Apply Kubernetes Manifests
 ```
-kubectl apply -f ./k8s
+kubectl apply -f ./manifests
 ```
-Wait for the deployment to come up
+Wait for the deployment to come up  
 
-5. Get the Ingress to the deployed application
+5. Get the Ingress to the deployed application  
 ```
-kubectl get ingress web --kubeconfig kubeconfig -o json | jq '.spec.rules[0].host' | tr -d '"'
+kubectl get ingress web --kubeconfig ~/.kube/config -o json | jq '.spec.rules[0].host' | tr -d '"'
 ```
 
+The host address should look something like this:  
+> `web-default-hello-c850.uclusters.app.uffizzi.com`  
+
+Copy and past this address into your browser to see the application running.
+
+7. Cleanup
+```
+uffizzi cluster delete hello
+```
