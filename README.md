@@ -33,7 +33,7 @@ kubectl get ingress web --kubeconfig ~/.kube/config -o json | jq '.spec.rules[0]
 The host address should look something like this:  
 > `web-default-quickstart-c850.uclusters.app.uffizzi.com`  
 
-Copy and past this address into your browser to see the application running.
+You can `curl` this address, or copy and past it into your browser to see the application running.
 
 7. Cleanup
 ```
