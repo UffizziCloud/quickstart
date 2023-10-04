@@ -44,7 +44,7 @@ kubectl get ingress web --kubeconfig ~/.kube/config -o json | jq '.spec.rules[0]
 Replace `~/.kube/config` with the path to your kubeconfig file if different. The host address should look something like this:  
 > `web-default-quickstart-c850.uclusters.app.uffizzi.com`  
 
-You can `curl` this address, or copy and past it into your browser to see the application running.
+You can `curl` this address, or copy and paste it into your browser to see the application running.
 
 **7. Cleanup**
 ``` bash
@@ -97,7 +97,7 @@ The host address should look something like this:
 
 > `web-default-dev-quickstart-1b0b.uclusters.app.uffizzi.com`
 
-You can `curl` this address, or copy and past it into your browser to see the application running.
+You can `curl` this address, or copy and paste it into your browser to see the application running.
 
 **5. Make a change**
 
