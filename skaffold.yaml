@@ -1,14 +1,13 @@
-apiVersion: skaffold/v4beta2
+apiVersion: skaffold/v4beta6
 kind: Config
-metadata:
-  name: ucluster-skaff-node-example
 build:
-  local:
-    push: true
   artifacts:
-    - image: ucluster-skaff-node-example
-      buildpacks:
-        builder: gcr.io/buildpacks/builder:v1
+    - image: registry.uffizzi.com/quickstart
+      context: ./src
+      sync:
+        manual:
+          - src: ./src
+            dest: /app
 manifests:
   rawYaml:
-    - manifests/web.yaml
+    - k8s/web.yaml
