@@ -5,9 +5,8 @@ build:
     - image: registry.uffizzi.com/quickstart
       context: ./src
       sync:
-        manual:
-          - src: ./src
-            dest: /app
+        infer:
+        - '*.js'
 manifests:
   rawYaml:
     - k8s/web.yaml

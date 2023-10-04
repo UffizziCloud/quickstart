@@ -5,8 +5,7 @@ metadata:
   name: web
 spec:
   ports:
-    - port: 3000
-      name: http
+    - port: 8080
   type: ClusterIP
   selector:
     app: web
@@ -25,7 +24,7 @@ spec:
               service:
                 name: web
                 port:
-                  number: 3000
+                  number: 8080
             path: /
             pathType: Prefix
   tls:
@@ -47,6 +46,6 @@ spec:
     spec:
       containers:
         - name: web
-          image: uffizzi/hello-world-k8s
+          image: registry.uffizzi.com/quickstart
           ports:
-            - containerPort: 3000
+            - containerPort: 8080
