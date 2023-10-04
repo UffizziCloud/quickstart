@@ -34,7 +34,7 @@ uffizzi cluster create quickstart
 kubectl apply -f ./k8s
 ```
 
-Wait for the deployment to come up.  
+The `./k8s` directory contains a [`web.yaml`](https://github.com/UffizziCloud/quickstart/blob/main/manifests/web.yaml) manifest that includes a `service`, `ingress` and `deployment` resources.  
 
 **5. Get the Ingress to the deployed application** 
 ``` bash
