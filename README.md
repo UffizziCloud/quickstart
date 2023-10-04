@@ -86,7 +86,7 @@ uffizzi dev start --quiet
 
 If you want to see the logs, remove the `--quiet` flag.
 
-_Be sure you are in the root directory of this repository. The `start` subcommand looks for a skaffold.yaml file in the current directory._
+_Be sure you are in the root directory of this repository. The `start` subcommand looks for a `skaffold.yaml file` in the current directory._
 
 **4. Get the ingress**
 ``` bash
