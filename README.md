@@ -10,34 +10,34 @@ This repo demonstrates how you can create Kubernetes virtual clusters on Uffizzi
 
 ## Create a virtual cluster
 
-1. Clone this repository
-```
+**1. Clone this repository**
+``` bash
 git clone https://github.com/UffizziCloud/quickstart.git && \
 cd quickstart
 ```
 
-2. Authenticate with Uffizzi
-```
+**2. Authenticate with Uffizzi**
+``` bash
 uffizzi login
 ```
 
 This command will open a browser window for you to login or create an account.
 
-3. Create a virtual cluster
-```
+**3. Create a virtual cluster**
+``` bash
 uffizzi cluster create quickstart
 # [⠦] Creating cluster quickstart...
 ```
 
-4. Apply Kubernetes manifests
-```
+**4. Apply Kubernetes manifests**
+``` bash
 kubectl apply -f ./k8s
 ```
 
 Wait for the deployment to come up.  
 
-5. Get the Ingress to the deployed application  
-```
+**5. Get the Ingress to the deployed application** 
+``` bash
 kubectl get ingress web --kubeconfig ~/.kube/config -o json | jq '.spec.rules[0].host' | tr -d '"'
 ```
 
@@ -48,8 +48,8 @@ The host address should look something like this:
 
 You can `curl` this address, or copy and past it into your browser to see the application running.
 
-7. Cleanup
-```
+**7. Cleanup**
+``` bash
 uffizzi cluster delete quickstart
 ```
 
@@ -57,22 +57,23 @@ uffizzi cluster delete quickstart
 
 If you want to make changes to the application, you can spin up a new instance in a dev cluster by following these steps:  
 
-1. Clone this repository
+**1. Clone this repository**
 
 If you haven't already, clone this repository:  
-```
+
+``` bash
 git clone https://github.com/UffizziCloud/quickstart.git && \
 cd quickstart
 ```
 
-2. Authenticate with Uffizzi
-```
+**2. Authenticate with Uffizzi**
+``` bash
 uffizzi login
 ```
 
 This command will open a browser window for you to login or create an account.
 
-3. Start a dev cluster
+**3. Start a dev cluster**
 ``` bash
 uffizzi dev start --quiet
 # Start creating a cluster
@@ -87,9 +88,8 @@ If you want to see the logs, remove the `--quiet` flag.
 
 _Be sure you are in the root directory of this repository. The `start` subcommand looks for a skaffold.yaml file in the current directory._
 
-4. Get the ingress
-
-```
+**4. Get the ingress**
+``` bash
 kubectl get ingress web --kubeconfig ~/.kube/config -o json | jq '.spec.rules[0].host' | tr -d '"'
 ```
 
@@ -101,11 +101,11 @@ The host address should look something like this:
 
 You can `curl` this address, or copy and past it into your browser to see the application running.
 
-5. Make a change
+**5. Make a change**
 
 You can make a change to the application and see it reflected in the deployed application. For example, change the `src/index.js` file to say "Hello, Uffizzi!":
 
-``` javascript
+``` javascript title="src/index.js"
 'use strict';
 
 const express = require('express')
@@ -120,6 +120,5 @@ app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 
 You may need to refresh the browser to see the changes.
 
-6. Cleanup  
-
+**6. Cleanup**  
 To stop the dev cluster, press `ctrl + c` in the terminal window where you ran `uffizzi dev start`.
