@@ -1,6 +1,14 @@
-# Hello World for Uffizzi Virtual Clusters (~2 min)
+# Uffizzi Quickstart (~2 min)
 
-This repo demonstrates how you can create Kubernetes virtual cluster on Uffizzi Cloud, then apply manifests for an example application.
+This repo demonstrates how you can create Kubernetes virtual clusters on Uffizzi Cloud. You can choose between creating a standard virual cluster or a dev cluster. Dev clusters are standard virtual clusters with additional developer tooling for building, testing, and auto-deploying your local project files. [Learn more >](https://docs.uffizzi.com/docs/quickstart)
+
+## Prerequisites
+
+- [Install](https://kubernetes.io/docs/tasks/tools/install-kubectl/) `kubectl`  
+- [Install](https://docs.uffizzi.com/installation) the Ufizzi CLI  
+- [Create an account](https://docs.uffizzi.com/installation#authentication) on Uffizzi Cloud  
+
+## Create a virtual cluster
 
 1. Clone this repository
 ```
@@ -8,10 +16,12 @@ git clone https://github.com/UffizziCloud/quickstart.git && \
 cd quickstart
 ```
 
-2. Authenticate with Uffizzi. This command will open a browser window for you to login or create an account.
+2. Authenticate with Uffizzi
 ```
 uffizzi login
 ```
+
+This command will open a browser window for you to login or create an account.
 
 3. Create a Uffizzi cluster
 ```
@@ -23,12 +33,15 @@ uffizzi cluster create quickstart
 ```
 kubectl apply -f ./k8s
 ```
-Wait for the deployment to come up  
+
+Wait for the deployment to come up.  
 
 5. Get the Ingress to the deployed application  
 ```
 kubectl get ingress web --kubeconfig ~/.kube/config -o json | jq '.spec.rules[0].host' | tr -d '"'
 ```
+
+Replace `~/.kube/config` with the path to your kubeconfig file if different.
 
 The host address should look something like this:  
 > `web-default-quickstart-c850.uclusters.app.uffizzi.com`  
@@ -39,3 +52,74 @@ You can `curl` this address, or copy and past it into your browser to see the ap
 ```
 uffizzi cluster delete quickstart
 ```
+
+## Development (dev cluster)
+
+If you want to make changes to the application, you can spin up a new instance in a dev cluster by following these steps:  
+
+1. Clone this repository
+
+If you haven't already, clone this repository:  
+```
+git clone https://github.com/UffizziCloud/quickstart.git && \
+cd quickstart
+```
+
+2. Authenticate with Uffizzi
+```
+uffizzi login
+```
+
+This command will open a browser window for you to login or create an account.
+
+3. Start a dev cluster
+``` bash
+uffizzi dev start --quiet
+# Start creating a cluster
+# Checking the cluster status...
+# Cluster with name: barrow-indigo was created.
+# ...
+# Press Ctrl+C to exit
+# Watching for changes...
+```
+
+If you want to see the logs, remove the `--quiet` flag.
+
+_Be sure you are in the root directory of this repository. The `start` subcommand looks for a skaffold.yaml file in the current directory._
+
+4. Get the ingress
+
+```
+kubectl get ingress web --kubeconfig ~/.kube/config -o json | jq '.spec.rules[0].host' | tr -d '"'
+```
+
+Replace `~/.kube/config` with the path to your kubeconfig file if different.
+
+The host address should look something like this:  
+
+> `web-default-dev-quickstart-1b0b.uclusters.app.uffizzi.com`
+
+You can `curl` this address, or copy and past it into your browser to see the application running.
+
+5. Make a change
+
+You can make a change to the application and see it reflected in the deployed application. For example, change the `src/index.js` file to say "Hello, Uffizzi!":
+
+``` javascript
+'use strict';
+
+const express = require('express')
+const app = express()
+
+app.use(express.static('public'));
+app.get('/', (req, res) => res.send('Hello, Uffizzi!'))
+
+const port = 8080
+app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+```
+
+You may need to refresh the browser to see the changes.
+
+6. Cleanup  
+
+To stop the dev cluster, press `ctrl + c` in the terminal window where you ran `uffizzi dev start`.
