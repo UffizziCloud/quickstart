@@ -21,7 +21,7 @@ uffizzi cluster create quickstart
 
 4. Apply Kubernetes Manifests
 ```
-kubectl apply -f ./manifests
+kubectl apply -f ./k8s
 ```
 Wait for the deployment to come up  
 
