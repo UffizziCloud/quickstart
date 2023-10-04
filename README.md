@@ -125,4 +125,11 @@ To stop the dev cluster, run:
 uffizzi dev stop
 ```
 
-Or if you did not include the `--quiet` option, press `ctrl + c` in the terminal window where you ran `uffizzi dev start`.
+Or if you did not include the `--quiet` option, press `ctrl + c` in the terminal window where you ran `uffizzi dev start`.  
+
+## A note about Uffizzi Ingress and networking  
+
+If your Pods provide an HTTP service, you may expose them to the Internet by defining an `Ingress`—either your own custom `Ingress` or the default one provided by Uffizzi. To use the default `Ingress`, set its `ingressClassName: uffizzi` as shown [here](https://github.com/UffizziCloud/quickstart/blob/841925ae2178e8d92aec9fef61f6f245748a127d/k8s/web.yaml#L18), or do not specify any `ingressClassName` and it will specify itself. By using the default, Uffizzi will provision for you an external IP address, generate a domain, and request a TLS certificate. This is a convenient option, especially for dev clusters, as you can use HTTPS in your applications, without the work of dynamically configuring domains and certs.  
+
+If your Pods provide another kind of TCP service, you may instead expose them to the Internet by defining a `Service` of `type: LoadBalancer`. This will obtain an external IP address from Uffizzi's infrastructure provider.
+
