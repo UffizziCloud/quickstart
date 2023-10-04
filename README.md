@@ -1,6 +1,6 @@
 # Hello World for Uffizzi Virtual Clusters (~2 min)
 
-This repo demonstrates how you can create Kubernetes virtual cluster on Uffizzi Cloud, the apply manifests for an example application.
+This repo demonstrates how you can create Kubernetes virtual cluster on Uffizzi Cloud, then apply manifests for an example application.
 
 1. Clone this repository
 ```
