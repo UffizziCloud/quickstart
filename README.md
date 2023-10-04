@@ -1,6 +1,6 @@
 # Uffizzi Quickstart (~2 min)
 
-This repo demonstrates how you can create Kubernetes virtual clusters on Uffizzi Cloud. You can choose between [creating a standard virual cluster](#create-a-virtual-cluster) or a [dev cluster](#development-dev-cluster). Dev clusters are standard virtual clusters with additional developer tooling for building, testing, and auto-deploying your local project files. [Learn more >](https://docs.uffizzi.com/docs/quickstart)
+This repo demonstrates how you can create Kubernetes virtual clusters on Uffizzi Cloud. You can choose between creating a [standard virual cluster](#create-a-virtual-cluster) or a [dev cluster](#development-dev-cluster). Dev clusters are standard virtual clusters with additional developer tooling for building, testing, and auto-deploying your local project files. [Learn more >](https://docs.uffizzi.com/docs/quickstart)
 
 ## Prerequisites
 
