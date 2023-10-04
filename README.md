@@ -55,7 +55,7 @@ uffizzi cluster delete quickstart
 
 ## Development (dev cluster)
 
-If you want to make changes to the application, you can spin up a new instance in a dev cluster by following these steps:  
+If you want to make changes to the application, you can spin up a new instance in a dev cluster. Changes you make in the dev cluster will not affect the original virtual cluster. 
 
 **1. Clone this repository**
 
