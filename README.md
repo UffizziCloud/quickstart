@@ -120,4 +120,9 @@ You may need to refresh the browser to see the changes.
 
 **6. Cleanup**  
 
-To stop the dev cluster, press `ctrl + c` in the terminal window where you ran `uffizzi dev start`.
+To stop the dev cluster, run:  
+```
+uffizzi dev stop
+```
+
+Or if you did not include the `--quiet` option, press `ctrl + c` in the terminal window where you ran `uffizzi dev start`.
