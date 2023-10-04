@@ -119,4 +119,5 @@ app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 You may need to refresh the browser to see the changes.
 
 **6. Cleanup**  
+
 To stop the dev cluster, press `ctrl + c` in the terminal window where you ran `uffizzi dev start`.
