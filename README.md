@@ -88,7 +88,7 @@ _Be sure you are in the root directory of this repository. The `start` subcomman
 
 **4. Get the ingress**
 ``` bash
-kubectl get ingress web --kubeconfig ~/.kube/config -o json | jq '.spec.rules[0].host' | tr -d '"'
+uffizzi dev ingress open
 ```
 
 Replace `~/.kube/config` with the path to your kubeconfig file if different.
