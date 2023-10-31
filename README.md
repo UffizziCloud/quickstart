@@ -91,8 +91,6 @@ _Be sure you are in the root directory of this repository. The `start` subcomman
 uffizzi dev ingress open
 ```
 
-Replace `~/.kube/config` with the path to your kubeconfig file if different.
-
 The host address should look something like this:  
 
 > `web-default-dev-quickstart-1b0b.uclusters.app.uffizzi.com`
