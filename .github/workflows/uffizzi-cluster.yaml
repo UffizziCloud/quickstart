@@ -83,7 +83,7 @@ jobs:
             https://docs.uffizzi.com/install
           edit-mode: replace
 
-      - name: Create and connect to vcluster
+      - name: Create and connect to cluster
         uses: UffizziCloud/cluster-action@main
         with:
           cluster-name: pr-${{ github.event.pull_request.number }}-e2e-helm
