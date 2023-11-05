@@ -1,4 +1,4 @@
-name: E2E
+name: Uffizzi Cluster
 
 on:
   pull_request:
