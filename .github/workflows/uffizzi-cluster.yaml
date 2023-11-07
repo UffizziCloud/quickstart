@@ -88,6 +88,8 @@ jobs:
         with:
           cluster-name: pr-${{ github.event.pull_request.number }}-e2e-helm
           server: https://app.uffizzi.com
+          k8s-version: 1.28
+          kubeconfig: kubeconfig
 
       - name: Apply Kustomize to test the new image
         id: prev
