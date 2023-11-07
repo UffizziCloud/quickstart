@@ -39,7 +39,7 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          context: ./
+          context: ./src
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
