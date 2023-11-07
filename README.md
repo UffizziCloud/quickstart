@@ -37,10 +37,10 @@ The `./k8s` directory contains a [`web.yaml`](https://github.com/UffizziCloud/qu
 
 **5. Get the Ingress to the deployed application** 
 ``` bash
-kubectl get ingress web --kubeconfig ~/.kube/config -o json | jq '.spec.rules[0].host' | tr -d '"'
+kubectl get ingress web -o jsonpath='{.spec.rules[0].host}{"\n"}'
 ```
 
-Replace `~/.kube/config` with the path to your kubeconfig file if different. The host address should look something like this:  
+The host address should look something like this:
 > `web-default-quickstart-c850.uclusters.app.uffizzi.com`  
 
 You can `curl` this address, or copy and paste it into your browser to see the application running.
