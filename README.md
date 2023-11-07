@@ -26,7 +26,6 @@ This command will open a browser window for you to login or create an account.
 **3. Create a virtual cluster**
 ``` bash
 uffizzi cluster create quickstart
-# [⠦] Creating cluster quickstart...
 ```
 
 **4. Apply Kubernetes manifests**
