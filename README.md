@@ -73,20 +73,17 @@ This command will open a browser window for you to login or create an account.
 
 **3. Start a dev cluster**
 ``` bash
-uffizzi dev start --quiet
-# Start creating a cluster
-# Checking the cluster status...
-# Cluster with name: barrow-indigo was created.
-# ...
-# Press Ctrl+C to exit
-# Watching for changes...
+uffizzi dev start
 ```
 
-If you want to see the logs, remove the `--quiet` flag.
+If you don't want to see the logs, add the `--quiet` flag.
 
-_Be sure you are in the root directory of this repository. The `start` subcommand looks for a `skaffold.yaml` file in the current directory._
+_Be sure you are in the root directory of this repository. The `start` subcommand looks for a `skaffold.yaml` file in the current directory._ Alternately, you can pass the path to your Skaffold file as an argmument. 
 
 **4. Get the ingress**
+
+In a new terminal, run:
+
 ``` bash
 uffizzi dev ingress open
 ```
@@ -119,11 +116,17 @@ You may need to refresh the browser to see the changes.
 **6. Cleanup**  
 
 To stop the dev cluster, run:  
-```
+``` bash
 uffizzi dev stop
 ```
 
-Or if you did not include the `--quiet` option, press `ctrl + c` in the terminal window where you ran `uffizzi dev start`.  
+Or press `ctrl + c` from the terminal window where you ran `uffizzi dev start`.  
+
+To permanently delete the cluster, run:
+
+``` bash
+uffizzi dev delete
+```
 
 ## A note about Uffizzi Ingress and networking  
 
