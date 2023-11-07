@@ -5,7 +5,7 @@ This repo demonstrates how you can create Kubernetes virtual clusters on Uffizzi
 ## Prerequisites
 
 - [Install](https://kubernetes.io/docs/tasks/tools/install-kubectl/) `kubectl`  
-- [Install](https://docs.uffizzi.com/installation) the Ufizzi CLI  
+- [Install](https://docs.uffizzi.com/install) the Ufizzi CLI  
 - [Create an account](https://docs.uffizzi.com/installation#authentication) on Uffizzi Cloud  
 
 ## Create a virtual cluster
