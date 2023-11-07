@@ -92,17 +92,20 @@ jobs:
       - name: Apply Kustomize to test the new image
         id: prev
         run: |
-          # Change the image name to those just built and pushed.
-          kustomize edit set image uffizzi/hello-world-k8s=${{ needs.build-image.outputs.tags }}
-
           if [[ ${RUNNER_DEBUG} == 1 ]]; then
-            cat kustomization.yaml
-            echo "`pwd`"
-            echo "`ls`"
+            pwd
+            ls -la
           fi
-
-          # Apply kustomized manifests to virtual cluster.
-          kubectl apply --kustomize . --kubeconfig ./kubeconfig
+          (
+            cp ./kubeconfig ./.github/k8s
+            cd .github/k8s
+            # Change the image name to those just built and pushed.
+            kustomize edit set image uffizzi/hello-world-k8s=${{ needs.build-image.outputs.tags }}
+          
+          
+            # Apply kustomized manifests to virtual cluster.
+            kubectl apply --kustomize . --kubeconfig ./kubeconfig
+          )
 
           # Allow uffizzi to sync the resources
           sleep 5
