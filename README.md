@@ -86,12 +86,9 @@ In a new terminal, run:
 ``` bash
 uffizzi dev ingress open
 ```
-
-The host address should look something like this:  
+This command will open the host address in your browser. The host address should look something like this:  
 
 > `web-default-dev-quickstart-1b0b.uclusters.app.uffizzi.com`
-
-You can `curl` this address, or copy and paste it into your browser to see the application running.
 
 **5. Make a change**
 
